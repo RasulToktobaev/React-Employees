@@ -1,5 +1,5 @@
 const {prisma} = require('../prisma/prisma-client')
-const {re} = require("prisma/build/child");
+// const {re} = require("prisma/build/child");
 
 const all = async (req, res) => {
     try {
@@ -16,7 +16,7 @@ const add = async (req, res) => {
     try {
         const data = req.body;
 
-        if (!data.firstName || !data.lastName || !data.adress || !data.age) {
+        if (!data.firstName || !data.lastName || !data.address || !data.age) {
         return res.status(400).json({message : "Все поля обязательные"})
         }
 

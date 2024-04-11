@@ -1,5 +1,7 @@
 const express = require('express');
-const router = express.Router()
+const router = express.Router();//{
+// get: / => ()
+// }
 const { auth} = require('../middleware/auth');
 const {all, add} = require("../controllers/employees");
 
