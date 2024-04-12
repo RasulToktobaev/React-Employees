@@ -3,7 +3,7 @@ const router = express.Router();//{
 // get: / => ()
 // }
 const { auth} = require('../middleware/auth');
-const {all, add} = require("../controllers/employees");
+const {all, add,remove,employee,edit} = require("../controllers/employees");
 
 router.get('/', auth, all)
 router.get('/:id', auth, () => console.log('get single employees'))
