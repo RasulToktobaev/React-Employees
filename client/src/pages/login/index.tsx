@@ -4,20 +4,21 @@ import {Card, Form, Row, Space, Typography} from "antd";
 import {CustomInput} from "../../components/customInput";
 import {PasswordInput} from "../../components/passwordInput/input";
 import {CustomButton} from "../../components/customButton";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Paths} from "../../paths";
 import {useLoginMutation, UserData} from "../../app/services/auth";
 import {isErrorWithMessage} from "../../utils/isErrorWithMessage";
 import {ErrorMessage} from "../../components/ErrorMessage";
 
 export const Login = () => {
-
+    const navigate = useNavigate();
     const [loginUser, loginUserResult] = useLoginMutation()
     const [error, setError] = useState('');
 
     const login = async (data: UserData) => {
         try {
             await loginUser(data).unwrap();
+            navigate("/")
 
         } catch (err) {
             const maybeError = isErrorWithMessage(err);
