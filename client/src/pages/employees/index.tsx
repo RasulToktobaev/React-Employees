@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Layout} from "../../components/layout";
 import {CustomButton} from "../../components/customButton";
 import {PlayCircleOutlined} from "@ant-design/icons";
@@ -8,6 +8,8 @@ import type {ColumnsType} from "antd/es/table";
 import {Employee} from "@prisma/client";
 import {useNavigate} from "react-router-dom";
 import {Paths} from "../../paths";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../features/auth/authSlice";
 
 
 const columns: ColumnsType<Employee> = [
@@ -31,11 +33,20 @@ const columns: ColumnsType<Employee> = [
 
 export const Employees = () => {
     const navigate = useNavigate();
+    const user = useSelector(selectUser);
     const {data, isLoading} = useGetAllEmployeesQuery();
+
+    useEffect(() => {
+        if(!user){
+            navigate('/login')
+        }
+    }, [navigate, user]);
+
+    const goToAddUser = () => navigate(Paths.employeeAdd)
 
     return (
         <Layout>
-            <CustomButton type="primary" onClick={() => null} icon={<PlayCircleOutlined/>}>
+            <CustomButton type="primary" onClick={goToAddUser} icon={<PlayCircleOutlined/>}>
                 Добавить
             </CustomButton>
             <Table
