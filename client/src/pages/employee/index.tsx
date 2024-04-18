@@ -8,6 +8,8 @@ import {Descriptions, Divider, Modal, Space} from "antd";
 import {CustomButton} from "../../components/customButton";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {ErrorMessage} from "../../components/ErrorMessage";
+import {Paths} from "../../paths";
+import {isErrorWithMessage} from "../../utils/isErrorWithMessage";
 
 
 export const Employee = () => {
@@ -33,6 +35,23 @@ export const Employee = () => {
 
     const hideModal = () => {
         setIsModalOpen(false)
+    }
+
+    const handleDeleteUser = async () => {
+        hideModal();
+
+        try {
+            await removeEmployee(data.id).unwrap();
+            navigate(`${Paths.status}/deleted`)
+        } catch (error) {
+            const maybeError = isErrorWithMessage(error);
+
+            if (maybeError) {
+                setError(error.data.message)
+            } else {
+                setError('Неизвестная ошибка')
+            }
+        }
     }
 
     return (
@@ -79,7 +98,7 @@ export const Employee = () => {
             <Modal
                 title="Подтвердите удаление"
                 open={isModalOpen}
-                onOk={() => null}
+                onOk={handleDeleteUser}
                 onCancel={hideModal}
                 okText="Подтвердить"
                 cancelText="Отменить"
