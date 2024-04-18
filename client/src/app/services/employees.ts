@@ -19,7 +19,8 @@ export const employeesApi = api.injectEndpoints({
         editEmployee: builder.mutation<string, Employee>({
             query : (employee) => ({
                 url: `/employees/edit/${employee.id}`,
-                method: "PUT"
+                method: "PUT",
+                body:employee
             })
         }) ,
         removeEmployee: builder.mutation<string, string>({

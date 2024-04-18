@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {useEditEmployeeMutation, useGetEmployeeQuery} from "../../app/services/employees";
-import {Layout, Row} from "antd";
+import { Row} from "antd";
 import {EmployeeForm} from "../../components/employeeForm";
 import {Employee} from "@prisma/client";
+import {Paths} from "../../paths";
+import {isErrorWithMessage} from "../../utils/isErrorWithMessage";
+import {Layout} from "../../components/layout";
 
 export const EditEmployee = () => {
     const navigate = useNavigate();
@@ -17,11 +20,29 @@ export const EditEmployee = () => {
     }
 
     const handleEditUser = async (employee: Employee) => {
+        try {
 
+            const editedEmployee = {
+                ...data,
+                ...employee
+            };
+
+            await editEmployee(editedEmployee).unwrap();
+            navigate(`${Paths.status}/updated`)
+
+        } catch (error) {
+            const maybeError = isErrorWithMessage(error);
+
+            if (maybeError) {
+                setError(error.data.message);
+            } else {
+                setError('Неизвестная ошибка')
+            }
+        }
     }
 
     return (
-        <Layout style={{marginTop:'40px'}}>
+        <Layout >
             <Row align="middle" justify="center">
                 <EmployeeForm
                     error={error}
